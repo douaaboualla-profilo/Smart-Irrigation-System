@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import api from 'api';
+import React, { useEffect, useState } from './react';
+import api from './api';
 
 function Dashboard() {
   const [data, setData] = useState({});
@@ -19,4 +19,5 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
 
