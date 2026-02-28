@@ -1,7 +1,7 @@
-import React from 'react';
-import Dashboard from 'Dashboard';
-import ControlPanel from 'ControlPanel';
-import Analytics from 'Analytics';
+import React from './react';
+import Dashboard from './Dashboard';
+import ControlPanel from './ControlPanel';
+import Analytics from './Analytics';
 
 function App() {
   return (
