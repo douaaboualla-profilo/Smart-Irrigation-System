@@ -1,4 +1,4 @@
-import React from 'react';
+import React from './react';
 
 function Analytics() {
   return (
@@ -10,3 +10,4 @@ function Analytics() {
 }
 
 export default Analytics;
+
