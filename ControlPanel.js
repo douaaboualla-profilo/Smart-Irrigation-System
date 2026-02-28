@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import api from 'api';
+import React, { useState } from './react';
+import api from './api';
 
 function ControlPanel() {
   const [mode, setMode] = useState("AUTO");
@@ -19,4 +19,5 @@ function ControlPanel() {
 }
 
 export default ControlPanel;
+
 
