@@ -1,56 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Smart Watering System Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>Smart Watering AI Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark">
 
-<div class="background-animation"></div>
+<div class="background"></div>
+<div class="floating-shapes"></div>
 
 <header>
-    <h1>🌱 Smart Watering Dashboard</h1>
-    <div class="mode-switch">
-        <label>Manual</label>
-        <label class="switch">
-            <input type="checkbox" id="modeToggle">
-            <span class="slider"></span>
-        </label>
-        <label>Auto</label>
+    <h1>🌱 Smart Watering AI</h1>
+
+    <div class="top-controls">
+
+        <!-- Theme Switch -->
+        <div class="toggle-container">
+    🌙
+    <div id="themeToggle" class="glow-toggle"></div>
+    ☀️
+</div>
+
+        <!-- Mode Switch -->
+       <div class="toggle-container">
+    Manual
+    <div id="modeToggle" class="glow-toggle"></div>
+    Auto
+</div>
+
     </div>
 </header>
 
 <section class="cards">
-
     <div class="card">
         <h2>Soil Moisture</h2>
-        <p id="moisture">-- %</p>
+        <p id="moisture">--%</p>
     </div>
 
     <div class="card">
         <h2>Temperature</h2>
-        <p id="temperature">-- °C</p>
+        <p id="temperature">--°C</p>
     </div>
 
     <div class="card">
         <h2>Humidity</h2>
-        <p id="humidity">-- %</p>
+        <p id="humidity">--%</p>
     </div>
 
     <div class="card status">
-        <h2>AI Irrigation Status</h2>
+        <h2>AI Decision</h2>
         <p id="aiStatus">Waiting...</p>
     </div>
-
 </section>
 
 <section class="controls">
@@ -58,28 +66,25 @@
 </section>
 
 <section class="charts">
-
     <div class="chart-container">
-        <h2>Water Consumption (L)</h2>
+        <h2>Water Consumption</h2>
         <canvas id="waterChart"></canvas>
     </div>
 
     <div class="chart-container">
-        <h2>Power Consumption (W)</h2>
+        <h2>Power Consumption</h2>
         <canvas id="powerChart"></canvas>
     </div>
-
 </section>
 
 <section class="weather">
     <h2>Weather Prediction</h2>
     <div class="weather-card">
-        <p id="weatherCondition">Loading...</p>
-        <p id="rainProbability">Rain Probability: --%</p>
+        <p id="weatherCondition">--</p>
+        <p id="rainProbability">Rain: --%</p>
     </div>
 </section>
 
 <script src="script.js"></script>
-
 </body>
 </html>
