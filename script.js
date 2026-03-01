@@ -1,71 +1,79 @@
-// Toggle Pump
+// ================= THEME TOGGLE =================
+const themeToggle = document.getElementById("themeToggle");
+
+themeToggle.addEventListener("click", () => {
+    themeToggle.classList.toggle("active");
+    document.body.classList.toggle("light");
+    document.body.classList.toggle("dark");
+});
+
+// ================= MODE TOGGLE =================
+const modeToggle = document.getElementById("modeToggle");
+
+modeToggle.addEventListener("click", () => {
+    modeToggle.classList.toggle("active");
+
+    const isAuto = modeToggle.classList.contains("active");
+    socket.emit("mode_change", { auto: isAuto });
+});
+
+// ================= PUMP CONTROL =================
 const pumpButton = document.getElementById("pumpButton");
 let pumpOn = false;
 
 pumpButton.addEventListener("click", () => {
     pumpOn = !pumpOn;
 
-    if (pumpOn) {
-        pumpButton.textContent = "Turn Pump OFF";
-        pumpButton.classList.remove("pump-off");
-        pumpButton.classList.add("pump-on");
-    } else {
-        pumpButton.textContent = "Turn Pump ON";
-        pumpButton.classList.remove("pump-on");
-        pumpButton.classList.add("pump-off");
-    }
+    pumpButton.textContent = pumpOn ? "Turn Pump OFF" : "Turn Pump ON";
+    pumpButton.className = pumpOn ? "pump-on" : "pump-off";
 
-    // Send to Flask backend
-    fetch("/api/pump", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ state: pumpOn })
-    });
+    socket.emit("pump_control", { state: pumpOn });
 });
 
-// Example Chart Data
-const waterChart = new Chart(document.getElementById('waterChart'), {
+// ================= WEBSOCKET =================
+const socket = io("http://localhost:5000");
+
+socket.on("connect", () => {
+    console.log("Connected to server");
+});
+
+// Live sensor update
+socket.on("sensor_update", (data) => {
+    document.getElementById("moisture").innerText = data.moisture + "%";
+    document.getElementById("temperature").innerText = data.temperature + "°C";
+    document.getElementById("humidity").innerText = data.humidity + "%";
+    document.getElementById("aiStatus").innerText = data.ai_decision;
+
+    waterChart.data.datasets[0].data.push(data.water_usage);
+    powerChart.data.datasets[0].data.push(data.power_usage);
+
+    waterChart.update();
+    powerChart.update();
+});
+
+// ================= CHARTS =================
+const waterChart = new Chart(document.getElementById("waterChart"), {
     type: 'line',
     data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        labels: [],
         datasets: [{
             label: 'Water (L)',
-            data: [12, 19, 8, 15, 10, 14, 20],
-            borderColor: '#00ffcc',
+            data: [],
+            borderColor: '#00c853',
             tension: 0.4
         }]
     }
 });
 
-const powerChart = new Chart(document.getElementById('powerChart'), {
+const powerChart = new Chart(document.getElementById("powerChart"), {
     type: 'line',
     data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        labels: [],
         datasets: [{
             label: 'Power (W)',
-            data: [50, 60, 45, 70, 55, 65, 80],
+            data: [],
             borderColor: '#ff9800',
             tension: 0.4
         }]
     }
 });
-
-// Simulated Weather
-document.getElementById("weatherCondition").innerText = "Partly Cloudy";
-document.getElementById("rainProbability").innerText = "Rain Probability: 30%";
-
-// Simulated Sensor Data
-setInterval(() => {
-    document.getElementById("moisture").innerText = 
-        Math.floor(Math.random() * 100) + "%";
-
-    document.getElementById("temperature").innerText = 
-        (20 + Math.random() * 10).toFixed(1) + "°C";
-
-    document.getElementById("humidity").innerText = 
-        Math.floor(Math.random() * 100) + "%";
-
-    document.getElementById("aiStatus").innerText =
-        Math.random() > 0.5 ? "Irrigation Required" : "No Irrigation Needed";
-
-}, 3000);
